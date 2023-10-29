@@ -1,25 +1,27 @@
-import NavBarMain  from './Navbar';
-import Loginform  from './Loginform';
+import NavBarMain  from './components/elements/Navbar';
+import Loginform  from './components/pages/Loginform';
+import Dashboard  from './components/pages/Dashboard';
+import Registerform  from './components/pages/Registerform';
 //import { Container } from 'react-bootstrap';
 //import { Container, Form, FloatingLabel, Button} from 'react-bootstrap';
-import logo from './logo.svg';
+import logo from './staticfile/logo.svg';
 import { Routes, Route, Navigate  } from "react-router-dom";
 
 
 function App() {
-  const user = localStorage.getItem('user');
-
-  if(!user) {
-    return <><NavBarMain logo={logo} /><Loginform logo={logo} /> </>
+  let user = localStorage.getItem('user');
+  
+  if(user) {
+    user = JSON.parse(user);
   }
   return (
     <>
-      <NavBarMain logo={logo} />
+      <NavBarMain logo={logo} userdetail = {user} />
       {/*<Loginform logo={logo} /> */}
       <Routes>
-        <Route path="/" element={ <div> </div> } />
-        <Route path="login" element={ <Loginform logo={logo} /> } />
-        <Route path="register" element={ <Loginform logo={logo} /> } />
+        <Route path="/" element={user ? <Dashboard logo={logo} /> : <Navigate to="/login" /> } />
+        <Route path="login" element={user ? <Navigate to="/dashboard" />: <Loginform logo={logo} />} />
+        <Route path="register" element={ <Registerform logo={logo} /> } />
         <Route path="dashboard" element={user ? <Dashboard logo={logo} /> : <Navigate to="/login" /> } />
 
       </Routes>

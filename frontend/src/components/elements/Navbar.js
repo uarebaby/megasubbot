@@ -1,7 +1,26 @@
 import { Container, Nav, Navbar, Button, Form, NavDropdown} from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import AuthService from "../../services/auth";
+import React ,{ useState, useEffect } from "react";
+
+
 
 
 function NavBarMain(prop) {
+  const navigate = useNavigate();
+  let email = "";
+  const logout_event = async () =>
+  {
+    await AuthService.logout();
+    navigate("/");
+    window.location.reload();
+  };
+  
+  //console.log(prop.userdetail);
+  if(prop.userdetail)
+  {
+    email = prop.userdetail.email;
+  }
   return (
     <Navbar expand="md" className="bg-body-tertiary py-3 fixed-top" data-bs-theme="dark">
       <Container fluid>
@@ -13,11 +32,13 @@ function NavBarMain(prop) {
               height="30"
               className="d-inline-block align-top"
             />{' '}
-            Megasub AutoBot
+            Megasubbot
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
+            {prop.userdetail ? 
+            <>
             <Nav.Link href="#features">Backtest</Nav.Link>
             <Nav.Link href="#pricing">Strategy</Nav.Link>
             <NavDropdown title="Settings" id="collapsible-nav-dropdown">
@@ -32,14 +53,21 @@ function NavBarMain(prop) {
               </NavDropdown.Item>
               
             </NavDropdown>
-            <Nav.Link href="#wwqewe" className="d-block d-md-none">Sign-up</Nav.Link>
-            <Nav.Link href="#pricing" className="d-block d-md-none">Login</Nav.Link>
+            </>:<></>}
+            { prop.userdetail ? <Nav.Link href="./logout" className="d-block d-md-none">Log-out</Nav.Link>
+            :<> <Nav.Link href="./register" className="d-block d-md-none">Sign-up</Nav.Link> 
+            <Nav.Link href="./login" className="d-block d-md-none">Login</Nav.Link> </> }
+            
           </Nav>
           <Nav className="ms-auto link-light d-flex">
             <Container fluid="md">
               <Form className="d-flex d-none d-md-block">
-                <Button variant="primary" className = "me-2">Sign-up</Button>{' '}
-                <Button variant="primary">Login</Button>{' '}
+                { email != "" ? <><Form.Label className = "me-2" >{ email } </Form.Label> {'  '} </> : <></>}
+                { prop.userdetail ? <Button variant="danger" className = "me-2" onClick={logout_event }>Log-out</Button>:
+                <> 
+                <Button variant="primary" className = "me-2" onClick={()=> navigate("/register")}>Sign-up</Button>{' '}
+                <Button variant="primary" onClick={()=> navigate("/login")}>Login</Button>{' '}
+                 </> }
               </Form>
             </Container>
           </Nav>

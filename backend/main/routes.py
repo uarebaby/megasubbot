@@ -115,51 +115,6 @@ def register_page():
                 "data": None
         }, 500
 
-@app.route('/register', methods=['GET', 'POST'])
-def register_page():
-    try:
-        data = request.json
-        if not data:
-            return {
-                "message": "Please provide user details",
-                "data": None,
-                "error": "Bad request"
-            }, 400
-        # validate input
-        is_validated = validate_email(data.get('email')) 
-    
-        if is_validated is not True:
-            return dict(message='Invalid E-mail', data=None, error=is_validated), 400
-        if len(data.get('password')) < 6:
-            return dict(message='Password should be more than 6 letters', data=None, error=is_validated), 400
-        
-        user = UserAccount.query.filter_by(email=data.get('email')).first()
-        
-        if user:
-            return dict(message='This e-mail address already be a member. Please use login instead.', data=None, error=is_validated), 400
-
-        try:
-            new_user = UserAccount(email = data.get('email') , password = data.get("password") , status = True)
-            db.session.add(new_user)
-            db.session.commit()
-            return {
-                    "message": "Your account have been successfully created. Please login",
-                    "error" : ""
-                }
-            
-        except Exception as e:
-                return {
-                    "error": "Something went wrong",
-                    "message": str(e)
-                }, 500
-        
-    except Exception as e:
-        return {
-                "message": "Something went wrong!xxx",
-                "error": str(e),
-                "data": None
-        }, 500
-
 
 #@app.route('/home')
 #def home_page():

@@ -1,6 +1,6 @@
 import { Container, Form, FloatingLabel, Button} from 'react-bootstrap';
 import React, { useState } from "react";
-import AuthService from "./services/auth"
+import AuthService from "../../services/auth"
 
 
 function Loginform(prop) {
@@ -16,8 +16,9 @@ function Loginform(prop) {
     AuthService.login(user.email, user.password).then(
         (response) => {
           //this.props.router.navigate("/profile");
-          //window.location.reload();
-          console.log(response)
+          //Show success and delay and redirect
+          window.location.reload();
+          //console.log(response)
         },
         error => {
           console.log(user.email);
@@ -25,6 +26,7 @@ function Loginform(prop) {
 
           setLoad(false);
           setMsg()
+          //Handle show error
         }
       );
     
