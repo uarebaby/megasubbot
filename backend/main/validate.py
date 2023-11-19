@@ -92,3 +92,11 @@ def validate_email_and_password(email, password):
                 upper and lower case letters, numbers and special characters'
         }
     return True
+
+
+def validate_new_strategy(data):
+    result = { 'is_valid' : True , 'error_msg' : []}
+    if data.get("name") == "" or data.get("name") is None:
+        result['error_msg'].append("Name is required")
+        result['is_valid'] = False
+    return result

@@ -7,6 +7,7 @@ function Registerform(prop) {
   const [user, setUser] = useState({"email" : null , "password" : null});
   const [loading, setLoad] = useState(false);
   const [msg, setMsg] = useState("");
+  const [checkAgree, setcheckAgree] = useState(false);
   let navigate = useNavigate();
   function handleSubmit(event) {
     
@@ -62,9 +63,10 @@ function Registerform(prop) {
                 type="checkbox"
                 id={`default-checkbox`}
                 label={`I agree condition terms`}
+                onChange={ e => setcheckAgree(e.target.checked)}
               />
             </div>
-            <Button variant="primary" className = "w-100 py-2" type="submit">Register</Button>{' '}
+            <Button variant="primary" className = "w-100 py-2" type="submit" disabled={!checkAgree || !user.email || !user.password }>Register</Button>{' '}
           </Form>
         </main>
       </Container>

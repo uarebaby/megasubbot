@@ -2,12 +2,17 @@ import { Container, Nav, Navbar, Button, Form, NavDropdown} from 'react-bootstra
 import { useNavigate } from 'react-router-dom';
 import AuthService from "../../services/auth";
 import React ,{ useState, useEffect } from "react";
-
+import {
+  getUserEmail, getUserToken, setUserData, getUserData
+} from '../../redux/userSlice'
+import { useSelector, useDispatch } from 'react-redux'
 
 
 
 function NavBarMain(prop) {
   const navigate = useNavigate();
+  const userData = useSelector(getUserData);
+  const dispatch = useDispatch();
   let email = "";
   const logout_event = async () =>
   {
@@ -16,11 +21,16 @@ function NavBarMain(prop) {
     window.location.reload();
   };
   
-  //console.log(prop.userdetail);
-  if(prop.userdetail)
+ // console.log(userData);
+ // if(prop.userdetail)
+ // {
+ //   email = prop.userdetail.email;
+ // }
+  if (userData.xtoken && userData.email )
   {
-    email = prop.userdetail.email;
+    email = userData.email
   }
+
   return (
     <Navbar expand="md" className="bg-body-tertiary py-3 fixed-top" data-bs-theme="dark">
       <Container fluid>
@@ -37,7 +47,7 @@ function NavBarMain(prop) {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            {prop.userdetail ? 
+            {userData.xtoken !== "" ? 
             <>
             <Nav.Link href="#features">Backtest</Nav.Link>
             <Nav.Link href="#pricing">Strategy</Nav.Link>
@@ -54,7 +64,7 @@ function NavBarMain(prop) {
               
             </NavDropdown>
             </>:<></>}
-            { prop.userdetail ? <Nav.Link href="./logout" className="d-block d-md-none">Log-out</Nav.Link>
+            { userData.xtoken !== "" ? <Nav.Link href="./logout" className="d-block d-md-none">Log-out</Nav.Link>
             :<> <Nav.Link href="./register" className="d-block d-md-none">Sign-up</Nav.Link> 
             <Nav.Link href="./login" className="d-block d-md-none">Login</Nav.Link> </> }
             
@@ -63,7 +73,7 @@ function NavBarMain(prop) {
             <Container fluid="md">
               <Form className="d-flex d-none d-md-block">
                 { email != "" ? <><Form.Label className = "me-2" >{ email } </Form.Label> {'  '} </> : <></>}
-                { prop.userdetail ? <Button variant="danger" className = "me-2" onClick={logout_event }>Log-out</Button>:
+                { userData.xtoken !== "" ? <Button variant="danger" className = "me-2" onClick={logout_event }>Log-out</Button>:
                 <> 
                 <Button variant="primary" className = "me-2" onClick={()=> navigate("/register")}>Sign-up</Button>{' '}
                 <Button variant="primary" onClick={()=> navigate("/login")}>Login</Button>{' '}
