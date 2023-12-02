@@ -50,7 +50,7 @@ function NavBarMain(prop) {
             {userData.xtoken !== "" ? 
             <>
             <Nav.Link href="#features">Backtest</Nav.Link>
-            <Nav.Link href="#pricing">Strategy</Nav.Link>
+            <Nav.Link href="/strategymain">Strategy</Nav.Link>
             <NavDropdown title="Settings" id="collapsible-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">API Settings</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">

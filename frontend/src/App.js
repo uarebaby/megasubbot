@@ -2,6 +2,7 @@ import NavBarMain  from './components/elements/Navbar';
 import Loginform  from './components/pages/Loginform';
 import Dashboard  from './components/pages/Dashboard';
 import Registerform  from './components/pages/Registerform';
+import Strategymain  from './components/pages/Strategymain';
 //import { Container } from 'react-bootstrap';
 //import { Container, Form, FloatingLabel, Button} from 'react-bootstrap';
 import logo from './staticfile/logo.svg';
@@ -39,13 +40,12 @@ console.log(userData);
     <>
       <NavBarMain logo={logo} />
       <ToastContainer />
-      {/*<Loginform logo={logo} /> */}
       <Routes>
         <Route path="/" element={user ? <Dashboard logo={logo} showMsg = {showMsg} /> : <Navigate to="/login" /> } />
         <Route path="login" element={user ? <Navigate to="/dashboard" />: <Loginform logo={logo} showMsg = {showMsg} />} />
         <Route path="register" element={ <Registerform logo={logo} showMsg = {showMsg} /> } />
         <Route path="dashboard" element={user ? <Dashboard logo={logo} showMsg = {showMsg} /> : <Navigate to="/login" /> } />
-
+        <Route path="strategymain" element={user ? <Strategymain logo={logo} showMsg = {showMsg} /> : <Navigate to="/login" /> } />
       </Routes>
       
     </>

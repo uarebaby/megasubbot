@@ -1,10 +1,8 @@
 import axios from "axios";
+import authHeader from "./authheader";
 
-const API_URL = "http://localhost:5000/";
-const HEADERS={
-            "Access-Control-Allow-Origin" : "*",
-            "Content-Type": "application/json"
-}
+const API_URL = process.env.REACT_APP_API_URL;
+const HEADERS = authHeader();
 
 class AuthService {
   login(email, password) {

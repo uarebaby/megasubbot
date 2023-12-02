@@ -116,7 +116,7 @@ def register_page():
                 "data": None
         }, 500
 
-@app.route('/strategy', methods=['GET', 'POST', 'PUT', 'DELETE'])
+@app.route('/strategy', methods=['GET', 'POST', 'PUT'])
 @token_required
 def strategy_page(current_user):
     try:
@@ -137,7 +137,6 @@ def strategy_page(current_user):
             is_validate = validate_new_strategy(data)
             if is_validate['is_valid'] is not True:
                 return dict(error=is_validate['error_msg']), 400
-            
             else:
                 try:
                     if request.method == 'POST':
@@ -172,7 +171,7 @@ def strategy_page(current_user):
                 getstrategy.deleted_at = datetime.datetime.now()
                 db.session.commit()
                 return {
-                        "message": "Strategy have been successfully updated",
+                        "message": "Strategy have been successfully deleted",
                         "error" : ""
                     }
             except Exception as e:
@@ -188,21 +187,33 @@ def strategy_page(current_user):
                 "data": None
         }, 500
     
-@app.route('/strategy/<int:strategy_id>/',methods=['GET'])
+@app.route('/strategy/<int:strategy_id>/',methods=['GET','DELETE'])
 @token_required
 def strategy_form_page(current_user,strategy_id):
     try:
         user = current_user
         strategy = Strategy.query.filter_by(user_id=user.id,id = strategy_id,status = True).first()
+        
         if strategy:
-            return jsonify({ "id" : strategy.id , 
-                "user_id" : strategy.user_id , 
-                "name" : strategy.name,
-                "description" : strategy.description,
-                "status" : strategy.status })
+            if request.method == 'GET':
+                return jsonify({ "id" : strategy.id , 
+                    "user_id" : strategy.user_id , 
+                    "name" : strategy.name,
+                    "description" : strategy.description,
+                    "status" : strategy.status })
+            elif request.method == 'DELETE':
+                strategy.status = False
+                strategy.deleted_at = datetime.datetime.now()
+                db.session.commit()
+                return {
+                        "message": "Strategy have been successfully updated",
+                        "error" : ""
+                }
 
         else:
             return dict(message="Couldn't found", data=None, error=True), 400
+        
+
     except Exception as e:
         raise
         return {

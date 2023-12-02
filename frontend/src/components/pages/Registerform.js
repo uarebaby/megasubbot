@@ -9,9 +9,8 @@ function Registerform(prop) {
   const [msg, setMsg] = useState("");
   const [checkAgree, setcheckAgree] = useState(false);
   let navigate = useNavigate();
+  
   function handleSubmit(event) {
-    
-
     event.preventDefault();
     //console.log(user)
     setLoad(true);
